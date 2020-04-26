@@ -137,7 +137,6 @@
 								<from>postgres:9.4</from>
 								<assembly>
 									<mode>dir</mode>
-									<!-- database startup script -->
 									<targetDir>/docker-entrypoint-initdb.d</targetDir>
 									<inline>
 										<files>
@@ -147,27 +146,13 @@
 										</files>
 									</inline>
 								</assembly>
-								<!--env>
-									<POSTGRES_PASSWORD>${postgresql.password}</POSTGRES_PASSWORD>
-								</env-->
 							</build>
-							<run>
-								<!-- Wait for database up and running -->
-								<wait>
-									<tcp>
-										<ports>
-											<port>5432</port>
-										</ports>
-									</tcp>
-								</wait>
-							</run>
 						</image>
 					</images>
 				</configuration>
 
 				<executions>
 					<execution>
-						<!-- start Docker -->
 						<id>start</id>
 						<phase>pre-integration-test</phase>
 						<goals>
@@ -193,7 +178,6 @@
 						</configuration>
 					</execution>
 					<execution>
-						<!-- stop Docker -->
 						<id>stop</id>
 						<phase>post-integration-test</phase>
 						<goals>

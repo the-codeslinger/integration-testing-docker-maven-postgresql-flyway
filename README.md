@@ -1,13 +1,9 @@
-# Read Me First
-The following was discovered as part of building this project:
+This is a sample project that uses the docker-maven-plugin to build 
+and run a PostgreSQL server during integration testing, especially to 
+verify that Flyway database migrations fail before continuous 
+deployment.
 
-* The original package name 'com.thecodeslinger.docker-db-testing' is invalid and this project uses 'com.thecodeslinger.dockerdbtesting' instead.
+For more information visit my [blog][] where I'll explain the most
+important concepts.
 
-# Getting Started
-
-### Reference Documentation
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.2.6.RELEASE/maven-plugin/)
-
+[blog]: http://the-codeslinger.com/2020/04/26/integration-testing-with-docker-maven-plugin-postgresql-flyway/
