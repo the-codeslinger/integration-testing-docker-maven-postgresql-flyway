@@ -80,6 +80,11 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<environmentVariables>
+						<it-database.port>${it-database.port}</it-database.port>
+					</environmentVariables>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -112,6 +117,88 @@
 								</resource>
 							</resources>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.33.0</version>
+
+				<configuration>
+					<dockerHost>http://localhost:2375</dockerHost>
+
+					<images>
+						<image>
+							<name>test-postgres</name>
+							<alias>test-postgres</alias>
+							<build>
+								<from>postgres:9.4</from>
+								<assembly>
+									<mode>dir</mode>
+									<!-- database startup script -->
+									<targetDir>/docker-entrypoint-initdb.d</targetDir>
+									<inline>
+										<files>
+											<file>
+												<source>src/test-integration/resources/setup-postgres.sql</source>
+											</file>
+										</files>
+									</inline>
+								</assembly>
+								<!--env>
+									<POSTGRES_PASSWORD>${postgresql.password}</POSTGRES_PASSWORD>
+								</env-->
+							</build>
+							<run>
+								<!-- Wait for database up and running -->
+								<wait>
+									<tcp>
+										<ports>
+											<port>5432</port>
+										</ports>
+									</tcp>
+								</wait>
+							</run>
+						</image>
+					</images>
+				</configuration>
+
+				<executions>
+					<execution>
+						<!-- start Docker -->
+						<id>start</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>start</goal>
+						</goals>
+						<configuration>
+							<images>
+								<image>
+									<name>test-postgres</name>
+									<alias>it-database</alias>
+									<run>
+										<ports>
+											<port>it-database.port:5432</port>
+										</ports>
+										<wait>
+											<log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
+											<time>20000</time>
+										</wait>
+									</run>
+								</image>
+							</images>
+						</configuration>
+					</execution>
+					<execution>
+						<!-- stop Docker -->
+						<id>stop</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
