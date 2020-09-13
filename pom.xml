@@ -81,9 +81,9 @@
 					</execution>
 				</executions>
 				<configuration>
-					<environmentVariables>
+					<systemPropertyVariables>
 						<it-database.port>${it-database.port}</it-database.port>
-					</environmentVariables>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 
